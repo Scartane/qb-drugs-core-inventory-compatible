@@ -382,8 +382,20 @@ RegisterNetEvent('qb-drugs:client:cornerselling', function()
                 QBCore.Functions.Notify(Lang:t("error.in_vehicle"), 'error')
             else
                 if result then
-                    availableDrugs = result
-                    ToggleSelling()
+                    local canSell = false
+                    for _, value in ipairs(result) do
+                        if value.amount > 0 then
+                            canSell = true
+                            break
+                        end
+                    end
+                    if canSell then
+                        availableDrugs = result
+                        ToggleSelling()
+                    else
+                        QBCore.Functions.Notify(Lang:t("error.has_no_drugs"), 'error')
+                        LocalPlayer.state:set("inv_busy", false, true)    
+                    end                    
                 else
                     QBCore.Functions.Notify(Lang:t("error.has_no_drugs"), 'error')
                     LocalPlayer.state:set("inv_busy", false, true)
