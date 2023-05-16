@@ -8,11 +8,13 @@ local function getAvailableDrugs(source)
         local item = Player.Functions.GetItemByName(k)
 
         if item then
-            AvailableDrugs[#AvailableDrugs + 1] = {
-                item = item.name,
-                amount = item.amount,
-                label = QBCore.Shared.Items[item.name]["label"]
-            }
+            if item.amount > 0 then
+                AvailableDrugs[#AvailableDrugs + 1] = {
+                    item = item.name,
+                    amount = item.amount,
+                    label = QBCore.Shared.Items[item.name]["label"]
+                }
+            end
         end
     end
     return table.type(AvailableDrugs) ~= "empty" and AvailableDrugs or nil
